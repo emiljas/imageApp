@@ -8,6 +8,8 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -16,13 +18,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
-
 namespace ImageApp.ImageBrowserPage
 {
-    /// <summary>
-    /// A basic page that provides characteristics common to most applications.
-    /// </summary>
     public sealed partial class ImageBrowser : Page
     {
         public static readonly int LastPathsLimit = 10;
@@ -31,18 +28,11 @@ namespace ImageApp.ImageBrowserPage
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        /// <summary>
-        /// This can be changed to a strongly typed view model.
-        /// </summary>
         public ObservableDictionary DefaultViewModel
         {
             get { return this.defaultViewModel; }
         }
 
-        /// <summary>
-        /// NavigationHelper is used on each page to aid in navigation and 
-        /// process lifetime management
-        /// </summary>
         public NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
@@ -57,43 +47,15 @@ namespace ImageApp.ImageBrowserPage
             this.navigationHelper.SaveState += navigationHelper_SaveState;
         }
 
-        /// <summary>
-        /// Populates the page with content passed during navigation. Any saved state is also
-        /// provided when recreating a page from a prior session.
-        /// </summary>
-        /// <param name="sender">
-        /// The source of the event; typically <see cref="NavigationHelper"/>
-        /// </param>
-        /// <param name="e">Event data that provides both the navigation parameter passed to
-        /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
-        /// a dictionary of state preserved by this page during an earlier
-        /// session. The state will be null the first time a page is visited.</param>
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
         }
 
-        /// <summary>
-        /// Preserves state associated with this page in case the application is suspended or the
-        /// page is discarded from the navigation cache.  Values must conform to the serialization
-        /// requirements of <see cref="SuspensionManager.SessionState"/>.
-        /// </summary>
-        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
-        /// <param name="e">Event data that provides an empty dictionary to be populated with
-        /// serializable state.</param>
         private void navigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
         }
 
         #region NavigationHelper registration
-
-        /// The methods provided in this section are simply used to allow
-        /// NavigationHelper to respond to the page's navigation methods.
-        /// 
-        /// Page specific logic should be placed in event handlers for the  
-        /// <see cref="GridCS.Common.NavigationHelper.LoadState"/>
-        /// and <see cref="GridCS.Common.NavigationHelper.SaveState"/>.
-        /// The navigation parameter is available in the LoadState method 
-        /// in addition to page state preserved during an earlier session.
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -147,15 +109,64 @@ namespace ImageApp.ImageBrowserPage
 
         private void WritePath_Click(object sender, RoutedEventArgs e)
         {
-            SetPathPopUp.Width = LastPathsComboBox.ActualWidth;
-            SetPathStackPanel.Width = LastPathsComboBox.ActualWidth;
+            ResizeSetPathPopUp();
+            LastPathsComboBox.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            SetPathPopUp.IsOpen = true;
+            var lastPath = LastPathsComboBox.Items.FirstOrDefault();
+            if(lastPath != null)
+            {
+                NewPathTextBox.Text = lastPath.ToString();
+                NewPathTextBox.SelectAll();
+                NewPathErrorTextBlock.Text = "";
+            }
+        }
 
-            Point relativePoint = LastPathsComboBox.TransformToVisual(LastPathsComboBox.Parent as Grid)
-                                                   .TransformPoint(new Point(0, 0));
+        private void ResizeSetPathPopUp()
+        {
+            SetPathGrid.Width = LastPathsComboBox.ActualWidth;
+            var relativePoint = CalculateSetPathPopUpPosition();
             SetPathPopUp.VerticalOffset = relativePoint.Y;
             SetPathPopUp.HorizontalOffset = relativePoint.X;
+        }
 
-            SetPathPopUp.IsOpen = true;
+        private Point CalculateSetPathPopUpPosition()
+        {
+            var parent = LastPathsComboBox.Parent as Grid;
+            var transform = LastPathsComboBox.TransformToVisual(parent);
+            var relativePoint = transform.TransformPoint(new Point(0, 0));
+            return relativePoint;
+        }
+
+        private void SetPathPopUp_Closed(object sender, object e)
+        {
+            LastPathsComboBox.Visibility = Windows.UI.Xaml.Visibility.Visible;
+        }
+
+        private void SetPathPopUp_Opened(object sender, object e)
+        {
+            NewPathTextBox.Focus(FocusState.Programmatic);
+        }
+
+        private void CancelSettingPath_Click(object sender, RoutedEventArgs e)
+        {
+            LastPathsComboBox.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            SetPathPopUp.IsOpen = false;
+        }
+
+        private async void SetPath_Click(object sender, RoutedEventArgs e)
+        {
+            NewPathErrorTextBlock.Text = "";
+            var path = NewPathTextBox.Text;
+            Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.Add(path);
+            try
+            {
+                var folder = await StorageFolder.GetFolderFromPathAsync(path);
+                lastPathManager.Add(path);
+            }
+            catch(Exception ex)
+            {
+                NewPathErrorTextBlock.Text = ex.Message;
+            }
         }
     }
 }
