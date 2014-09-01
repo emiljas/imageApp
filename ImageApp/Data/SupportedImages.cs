@@ -18,7 +18,7 @@ namespace ImageApp.Data
 
         public static bool IsSupported(string extension)
         {
-            return Extensions.Contains(extension);
+            return Extensions.Contains(extension.ToLower());
         }
     }
 }

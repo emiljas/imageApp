@@ -54,7 +54,7 @@
                     <RowDefinition Height="100"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <ComboBox Grid.Column="0" Height="30" Padding="5, 5" x:Name="LastPathsComboBox" SelectionChanged="LastPathsComboBox_SelectionChanged" PlaceholderText="choose from last paths"/>
+                <ComboBox Grid.Column="0" Height="30" Padding="5, 5" Margin="10, 0"  x:Name="LastPathsComboBox" SelectionChanged="LastPathsComboBox_SelectionChanged" PlaceholderText="choose from last paths"/>
                 <AppBarButton Grid.Column="1" Icon="Folder" Label="Pick folder" Click="PickFolder_Click"></AppBarButton>
             </Grid>
             <ListView Grid.Row="1" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -69,16 +69,18 @@
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="100"></ColumnDefinition>
+                    <ColumnDefinition Width="200"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" x:Name="SelectedImage"/>
-                <StackPanel Grid.Column="1">
-                    <TextBlock Text="File name:"/>
-                    <TextBlock x:Name="FileNameTextBlock"/>
-                    <TextBlock Text="Size:"/>
-                    <TextBlock x:Name="SizeTextBlock"/>
-                    <TextBlock Text="Last modified date:"/>
-                    <TextBlock x:Name="LastModifiedDateTextBlock"/>
+                <Border Grid.Column="0">
+                    <Image x:Name="SelectedImage"/>
+                </Border>
+                <StackPanel Grid.Column="1" Margin="20, 0, 0, 0" VerticalAlignment="Center">
+                    <TextBlock Text="File name:" Style="{StaticResource FileInfoCaptionTextBlockStyle}"/>
+                    <TextBlock x:Name="FileNameTextBlock" Style="{StaticResource FileInfoValueTextBlockStyle}"/>
+                    <TextBlock Text="Size:" Style="{StaticResource FileInfoCaptionTextBlockStyle}"/>
+                    <TextBlock x:Name="SizeTextBlock" Style="{StaticResource FileInfoValueTextBlockStyle}"/>
+                    <TextBlock Text="Last modified date:" Style="{StaticResource FileInfoCaptionTextBlockStyle}"/>
+                    <TextBlock x:Name="LastModifiedDateTextBlock" Style="{StaticResource FileInfoValueTextBlockStyle}"/>
                 </StackPanel>
             </Grid>
         </Grid>

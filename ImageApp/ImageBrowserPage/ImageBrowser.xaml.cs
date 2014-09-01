@@ -1,5 +1,6 @@
 ﻿using ImageApp.Common;
 using ImageApp.Data;
+using ImageApp.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -140,10 +141,16 @@ namespace ImageApp.ImageBrowserPage
         private async void thumbnail_Click(object sender, EventArgs e)
         {
             var thumbnail = sender as Thumbnail;
+            var file = thumbnail.File;
             var bitmap = new BitmapImage();
-            var stream = await thumbnail.File.OpenReadAsync();
+            var stream = await file.OpenReadAsync();
             await bitmap.SetSourceAsync(stream);
             SelectedImage.Source = bitmap;
+
+            FileNameTextBlock.Text = file.Name;
+            var properties = await file.GetBasicPropertiesAsync();
+            SizeTextBlock.Text = CapacityConverter.ConvertByteToMegabytes(properties.Size) + " MB";
+            LastModifiedDateTextBlock.Text = properties.DateModified.LocalDateTime.ToString();
         }
     }
 }

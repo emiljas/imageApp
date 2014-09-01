@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ImageApp">
     <Application.Resources>
-        <Style x:Key="ErrorTextBlockStyle" TargetType="TextBlock">
+        <Style x:Key="FileInfoCaptionTextBlockStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
             <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
             <Setter Property="SelectionHighlightColor" Value="{ThemeResource TextSelectionHighlightColorThemeBrush}"/>
@@ -17,9 +17,25 @@
             <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
             <Setter Property="TextLineBounds" Value="TrimToBaseline"/>
             <Setter Property="OpticalMarginAlignment" Value="TrimSideBearings"/>
-            <Setter Property="Foreground" Value="Red"/>
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="0, 0, 0, 5"/>
+        </Style>
+        <Style x:Key="FileInfoValueTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="SelectionHighlightColor" Value="{ThemeResource TextSelectionHighlightColorThemeBrush}"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Typography.StylisticSet20" Value="True"/>
+            <Setter Property="Typography.DiscretionaryLigatures" Value="True"/>
+            <Setter Property="Typography.CaseSensitiveForms" Value="True"/>
+            <Setter Property="LineHeight" Value="20"/>
+            <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+            <Setter Property="TextLineBounds" Value="TrimToBaseline"/>
+            <Setter Property="OpticalMarginAlignment" Value="TrimSideBearings"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="FontStyle" Value="Oblique"/>
+            <Setter Property="Margin" Value="0, 0, 0, 40"/>
         </Style>
     </Application.Resources>
 
