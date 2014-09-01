@@ -36,13 +36,13 @@
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+            <TextBlock x:Name="pageTitle" Text="Browse" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
         <Grid Grid.Row="1" Margin="20, 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"></RowDefinition>
-                <RowDefinition Height="155"></RowDefinition>
+                <RowDefinition Height="180"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
@@ -57,11 +57,30 @@
                 <ComboBox Grid.Column="0" Height="30" Padding="5, 5" x:Name="LastPathsComboBox" SelectionChanged="LastPathsComboBox_SelectionChanged" PlaceholderText="choose from last paths"/>
                 <AppBarButton Grid.Column="1" Icon="Folder" Label="Pick folder" Click="PickFolder_Click"></AppBarButton>
             </Grid>
-            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
-                <StackPanel x:Name="ThumbnailsStackPanel" Orientation="Horizontal">
+            <ListView Grid.Row="1" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.ZoomMode="Disabled"
+                SelectionMode="None" x:Name="ThumbnailsListView">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel x:Name="ThumbnailsStackPanel" Margin="0, 0, 0, 14" Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" x:Name="SelectedImage"/>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="File name:"/>
+                    <TextBlock x:Name="FileNameTextBlock"/>
+                    <TextBlock Text="Size:"/>
+                    <TextBlock x:Name="SizeTextBlock"/>
+                    <TextBlock Text="Last modified date:"/>
+                    <TextBlock x:Name="LastModifiedDateTextBlock"/>
                 </StackPanel>
-            </ScrollViewer>
-            <TextBox Grid.Row="2" VerticalContentAlignment="Center" Height="200" PlaceholderText="ldfgjdsgklfdjg" Margin="0"/>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

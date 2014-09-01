@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageApp.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +24,14 @@ namespace ImageApp.ImageBrowserPage
     public sealed partial class Thumbnail : UserControl
     {
         private StorageFile file;
+        private const int Limit = 30;
+
+        public StorageFile File
+        {
+            get { return file; }
+        }
+
+        public event EventHandler Click;
 
         public Thumbnail()
         {
@@ -33,7 +42,12 @@ namespace ImageApp.ImageBrowserPage
         {
             this.file = file;
             await LoadThumbnail(file);
-            DescriptionTextBlock.Text = file.DisplayName;
+            ShowDescription(file.DisplayName);
+        }
+
+        private void ShowDescription(string displayName)
+        {
+            DescriptionTextBlock.Text = TextUtils.Fit(displayName, Limit);
         }
 
         private async Task LoadThumbnail(StorageFile file)
@@ -45,21 +59,22 @@ namespace ImageApp.ImageBrowserPage
             ThumbnailImage.Source = bitmap;
         }
 
-        private void StackPanel_PointerEntered(object sender, PointerRoutedEventArgs e)
-        {
-            StackPanel.Background = new SolidColorBrush(Colors.LightGray);
-            StackPanel.Background.Opacity = 0.3;
-        }
+        //private void StackPanel_PointerEntered(object sender, PointerRoutedEventArgs e)
+        //{
+        //    StackPanel.Background = new SolidColorBrush(Colors.LightGray);
+        //    StackPanel.Background.Opacity = 0.3;
+        //}
 
-        private void StackPanel_PointerExited(object sender, PointerRoutedEventArgs e)
-        {
-            StackPanel.Background = new SolidColorBrush(Colors.Black);
-            StackPanel.Background.Opacity = 1;
-        }
+        //private void StackPanel_PointerExited(object sender, PointerRoutedEventArgs e)
+        //{
+        //    StackPanel.Background = new SolidColorBrush(Colors.Black);
+        //    StackPanel.Background.Opacity = 1;
+        //}
 
-        protected override void OnPointerReleased(PointerRoutedEventArgs e)
+        private void StackPanel_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            base.OnPointerReleased(e);
+            if (Click != null)
+                Click(this, EventArgs.Empty);
         }
     }
 }

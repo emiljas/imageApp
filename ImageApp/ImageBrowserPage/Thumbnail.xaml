@@ -9,10 +9,10 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Border Padding="5" Margin="0, 0, 0, 20" x:Name="StackPanel">
-    <StackPanel PointerEntered="StackPanel_PointerEntered" PointerExited="StackPanel_PointerExited">
+    <Border Padding="5" Margin="0, 0, 0, 0" x:Name="StackPanel">
+    <StackPanel PointerReleased="StackPanel_PointerReleased">
         <Image x:Name="ThumbnailImage" Height="100"/>
-        <TextBlock x:Name="DescriptionTextBlock" Margin="0, 10, 0, 0"/>
+        <TextBlock x:Name="DescriptionTextBlock" Margin="0, 10, 0, 0" TextAlignment="Center"/>
     </StackPanel>
     </Border>
 

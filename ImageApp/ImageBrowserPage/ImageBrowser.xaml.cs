@@ -112,23 +112,38 @@ namespace ImageApp.ImageBrowserPage
 
         private async void LastPathsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedPath = LastPathsComboBox.Items.First().ToString();
-            if(this.path != selectedPath)
+            if (LastPathsComboBox.Items.Count != 0)
             {
-                this.path = selectedPath;
-                var folder = await StorageFolder.GetFolderFromPathAsync(this.path);
-                var files = await folder.GetFilesAsync();
+                ThumbnailsListView.Items.Clear();
 
-                foreach (var file in files)
+                var selectedPath = LastPathsComboBox.Items.First().ToString();
+                if (this.path != selectedPath)
                 {
-                    if (SupportedImages.IsSupported(file.FileType))
+                    this.path = selectedPath;
+                    var folder = await StorageFolder.GetFolderFromPathAsync(this.path);
+                    var files = await folder.GetFilesAsync();
+
+                    foreach (var file in files)
                     {
-                        var thumbnail = new Thumbnail();
-                        thumbnail.SetFileAsync(file);
-                        ThumbnailsStackPanel.Children.Add(thumbnail);
+                        if (SupportedImages.IsSupported(file.FileType))
+                        {
+                            var thumbnail = new Thumbnail();
+                            thumbnail.Click += thumbnail_Click;
+                            thumbnail.SetFileAsync(file);
+                            ThumbnailsListView.Items.Add(thumbnail);
+                        }
                     }
                 }
             }
+        }
+
+        private async void thumbnail_Click(object sender, EventArgs e)
+        {
+            var thumbnail = sender as Thumbnail;
+            var bitmap = new BitmapImage();
+            var stream = await thumbnail.File.OpenReadAsync();
+            await bitmap.SetSourceAsync(stream);
+            SelectedImage.Source = bitmap;
         }
     }
 }
