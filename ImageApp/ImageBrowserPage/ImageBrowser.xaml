@@ -42,46 +42,26 @@
         <Grid Grid.Row="1" Margin="20, 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="155"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <ComboBox Grid.Column="0" Height="30" Padding="0, 5" x:Name="LastPathsComboBox" PlaceholderText="choose from last paths" HorizontalContentAlignment="Center"/>
-                <AppBarButton Grid.Column="1" Icon="Edit" Label="Write path" Click="WritePath_Click"></AppBarButton>
-                <AppBarButton Grid.Column="2" Icon="Folder" Label="Pick folder" Click="PickFolder_Click"></AppBarButton>
-
-                <Popup x:Name="SetPathPopUp" IsLightDismissEnabled="True" Opened="SetPathPopUp_Opened" Closed="SetPathPopUp_Closed">
-                    <Grid x:Name="SetPathGrid">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <TextBox Grid.Row="0" Height="30" Padding="0, 5" x:Name="NewPathTextBox" VerticalContentAlignment="Bottom"  TextAlignment="Center"/>
-                        <Grid Grid.Row="1" VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="90"></ColumnDefinition>
-                                <ColumnDefinition Width="90"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Height="40" x:Name="NewPathErrorTextBlock" Style="{StaticResource ErrorTextBlockStyle}"/>
-                            <Button Grid.Column="1" Width="90" Content="Set path" Click="SetPath_Click"/>
-                            <Button Grid.Column="2" Width="90" Content="Cancel" Click="CancelSettingPath_Click"/>
-                        </Grid>
-                    </Grid>
-                </Popup>
+                <ComboBox Grid.Column="0" Height="30" Padding="5, 5" x:Name="LastPathsComboBox" SelectionChanged="LastPathsComboBox_SelectionChanged" PlaceholderText="choose from last paths"/>
+                <AppBarButton Grid.Column="1" Icon="Folder" Label="Pick folder" Click="PickFolder_Click"></AppBarButton>
             </Grid>
-            <TextBox Grid.Row="1" VerticalContentAlignment="Center" Height="200" PlaceholderText="ldfgjdsgklfdjg" Margin="0"/>
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
+                <StackPanel x:Name="ThumbnailsStackPanel" Orientation="Horizontal">
+                </StackPanel>
+            </ScrollViewer>
+            <TextBox Grid.Row="2" VerticalContentAlignment="Center" Height="200" PlaceholderText="ldfgjdsgklfdjg" Margin="0"/>
         </Grid>
     </Grid>
 </Page>

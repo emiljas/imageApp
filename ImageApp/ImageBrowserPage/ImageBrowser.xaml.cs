@@ -1,4 +1,5 @@
 ﻿using ImageApp.Common;
+using ImageApp.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using Windows.UI.Core;
 using Windows.UI.Popups;
@@ -16,6 +18,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 namespace ImageApp.ImageBrowserPage
@@ -27,6 +30,7 @@ namespace ImageApp.ImageBrowserPage
         private LastPathsManager lastPathManager = new LastPathsManager(LastPathsLimit);
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private string path;
 
         public ObservableDictionary DefaultViewModel
         {
@@ -73,6 +77,7 @@ namespace ImageApp.ImageBrowserPage
         {
             var picker = MakeFolderPicker();
             var folder = await picker.PickSingleFolderAsync();
+            StorageApplicationPermissions.FutureAccessList.Add(folder);
             UpdateLastPaths(folder.Path);
             SelectFirstPath();
         }
@@ -88,10 +93,8 @@ namespace ImageApp.ImageBrowserPage
 
         private static void FilterPictureExtensions(FolderPicker picker)
         {
-            picker.FileTypeFilter.Add(".jpg");
-            picker.FileTypeFilter.Add(".jpeg");
-            picker.FileTypeFilter.Add(".gif");
-            picker.FileTypeFilter.Add(".png");
+            foreach (var fileType in SupportedImages.Extensions)
+                picker.FileTypeFilter.Add(fileType);
         }
 
         private void UpdateLastPaths(string newPath)
@@ -107,65 +110,24 @@ namespace ImageApp.ImageBrowserPage
             LastPathsComboBox.SelectedIndex = 0;
         }
 
-        private void WritePath_Click(object sender, RoutedEventArgs e)
+        private async void LastPathsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ResizeSetPathPopUp();
-            LastPathsComboBox.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            SetPathPopUp.IsOpen = true;
-            var lastPath = LastPathsComboBox.Items.FirstOrDefault();
-            if(lastPath != null)
+            var selectedPath = LastPathsComboBox.Items.First().ToString();
+            if(this.path != selectedPath)
             {
-                NewPathTextBox.Text = lastPath.ToString();
-                NewPathTextBox.SelectAll();
-                NewPathErrorTextBlock.Text = "";
-            }
-        }
+                this.path = selectedPath;
+                var folder = await StorageFolder.GetFolderFromPathAsync(this.path);
+                var files = await folder.GetFilesAsync();
 
-        private void ResizeSetPathPopUp()
-        {
-            SetPathGrid.Width = LastPathsComboBox.ActualWidth;
-            var relativePoint = CalculateSetPathPopUpPosition();
-            SetPathPopUp.VerticalOffset = relativePoint.Y;
-            SetPathPopUp.HorizontalOffset = relativePoint.X;
-        }
-
-        private Point CalculateSetPathPopUpPosition()
-        {
-            var parent = LastPathsComboBox.Parent as Grid;
-            var transform = LastPathsComboBox.TransformToVisual(parent);
-            var relativePoint = transform.TransformPoint(new Point(0, 0));
-            return relativePoint;
-        }
-
-        private void SetPathPopUp_Closed(object sender, object e)
-        {
-            LastPathsComboBox.Visibility = Windows.UI.Xaml.Visibility.Visible;
-        }
-
-        private void SetPathPopUp_Opened(object sender, object e)
-        {
-            NewPathTextBox.Focus(FocusState.Programmatic);
-        }
-
-        private void CancelSettingPath_Click(object sender, RoutedEventArgs e)
-        {
-            LastPathsComboBox.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            SetPathPopUp.IsOpen = false;
-        }
-
-        private async void SetPath_Click(object sender, RoutedEventArgs e)
-        {
-            NewPathErrorTextBlock.Text = "";
-            var path = NewPathTextBox.Text;
-            Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.Add(path);
-            try
-            {
-                var folder = await StorageFolder.GetFolderFromPathAsync(path);
-                lastPathManager.Add(path);
-            }
-            catch(Exception ex)
-            {
-                NewPathErrorTextBlock.Text = ex.Message;
+                foreach (var file in files)
+                {
+                    if (SupportedImages.IsSupported(file.FileType))
+                    {
+                        var thumbnail = new Thumbnail();
+                        thumbnail.SetFileAsync(file);
+                        ThumbnailsStackPanel.Children.Add(thumbnail);
+                    }
+                }
             }
         }
     }
