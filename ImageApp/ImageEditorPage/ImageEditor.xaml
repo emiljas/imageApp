@@ -39,5 +39,15 @@
             <TextBlock x:Name="pageTitle" Text="Editor" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
+        <Image Grid.Row="1" x:Name="EditImage"/>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Label="Negative" Click="Negative_Click"/>
+            <AppBarButton Label="Brightness" Click="Brightness_Click"/>
+            <AppBarButton Label="Crop" Click="Crop_Click"/>
+            <AppBarButton Label="Save" Click="Save_Click"/>
+            <AppBarButton Label="Close" Click="Close_Click"/>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>
