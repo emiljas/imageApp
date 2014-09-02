@@ -1,5 +1,6 @@
 ﻿using ImageApp.Common;
 using ImageApp.Data;
+using ImageApp.ImageEditorPage;
 using ImageApp.Utils;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace ImageApp.ImageBrowserPage
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         private string path;
+        private string selectedImagePath;
 
         public ObservableDictionary DefaultViewModel
         {
@@ -140,6 +142,7 @@ namespace ImageApp.ImageBrowserPage
 
         private async void thumbnail_Click(object sender, EventArgs e)
         {
+            BottomCommandAppBar.IsEnabled = true;
             var thumbnail = sender as Thumbnail;
             var file = thumbnail.File;
             var bitmap = new BitmapImage();
@@ -147,10 +150,17 @@ namespace ImageApp.ImageBrowserPage
             await bitmap.SetSourceAsync(stream);
             SelectedImage.Source = bitmap;
 
+            selectedImagePath = file.Path;
+
             FileNameTextBlock.Text = file.Name;
             var properties = await file.GetBasicPropertiesAsync();
             SizeTextBlock.Text = CapacityConverter.ConvertByteToMegabytes(properties.Size) + " MB";
             LastModifiedDateTextBlock.Text = properties.DateModified.LocalDateTime.ToString();
+        }
+
+        private void Edit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ImageEditor), selectedImagePath);
         }
     }
 }

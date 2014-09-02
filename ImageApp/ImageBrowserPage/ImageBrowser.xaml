@@ -85,4 +85,11 @@
             </Grid>
         </Grid>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar x:Name="BottomCommandAppBar" IsEnabled="False">
+            <AppBarButton Icon="Rename" Label="Rename"/>
+            <AppBarButton Icon="Delete" Label="Delete"/>
+            <AppBarButton Icon="Edit" Label="Edit" Click="Edit_Click"/>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>
