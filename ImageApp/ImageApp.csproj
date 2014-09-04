@@ -132,6 +132,8 @@
     <Compile Include="ImageBrowserPage\Thumbnail.xaml.cs">
       <DependentUpon>Thumbnail.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImageEditorPage\CropBitmap.cs" />
+    <Compile Include="ImageEditorPage\SelectedRegion.cs" />
     <Compile Include="ImageEditorPage\ImageEditor.xaml.cs">
       <DependentUpon>ImageEditor.xaml</DependentUpon>
     </Compile>

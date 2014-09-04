@@ -8,7 +8,7 @@
     xmlns:common="using:ImageApp.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" LayoutUpdated="pageRoot_LayoutUpdated" Loaded="pageRoot_Loaded" SizeChanged="pageRoot_SizeChanged">
+    mc:Ignorable="d">
 
     <Page.Resources>
         <x:String x:Key="AppName">My Application</x:String>
@@ -39,17 +39,47 @@
             <TextBlock x:Name="pageTitle" Text="Editor" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
-        <Canvas Grid.Row="1" Background="AntiqueWhite" SizeChanged="Canvas_SizeChanged" Loaded="Canvas_Loaded" LayoutUpdated="Canvas_LayoutUpdated">
-            <Image x:Name="EditImage" Loaded="EditImage_Loaded" ImageOpened="EditImage_ImageOpened" SizeChanged="EditImage_SizeChanged" Unloaded="EditImage_Unloaded"/>
-        </Canvas>
+        <Grid Grid.Row="1" x:Name="sourceImageGrid" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image x:Name="sourceImage"/>
+            <Canvas x:Name="imageCanvas" Visibility="Collapsed" >
+                <Path x:Name="nonselectRegion" Fill="{StaticResource ApplicationSecondaryForegroundThemeBrush}" Opacity="0.7">
+                    <Path.Data>
+                        <GeometryGroup>
+                            <RectangleGeometry Rect="{Binding OuterRect,Mode=OneWay}">
+                            </RectangleGeometry>
+                            <RectangleGeometry Rect="{Binding SelectedRect,Mode=OneWay}">
+                            </RectangleGeometry>
+                        </GeometryGroup>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="selectRegion" Fill="{StaticResource ApplicationPageBackgroundThemeBrush}" Opacity="0">
+                    <Path.Data>
+                        <RectangleGeometry Rect="{Binding SelectedRect,Mode=OneWay}"/>
+                    </Path.Data>
+                </Path>
+                <ContentControl ContentTemplate="{StaticResource RoundCorner}"  x:Name="topLeftCorner" Tag="TopLeftCorner" 
+                                            Canvas.Left="{Binding Path=TopLeftCornerCanvasLeft,Mode=OneWay}" 
+                                            Canvas.Top="{Binding Path=TopLeftCornerCanvasTop,Mode=OneWay}"/>
+                <ContentControl ContentTemplate="{StaticResource RoundCorner}"  x:Name="topRightCorner" Tag="TopRightCorner"
+                                            Canvas.Left="{Binding Path=BottomRightCornerCanvasLeft,Mode=OneWay}" 
+                                            Canvas.Top="{Binding Path=TopLeftCornerCanvasTop,Mode=OneWay}" />
+                <ContentControl ContentTemplate="{StaticResource RoundCorner}"  x:Name="bottomLeftCorner" Tag="BottomLeftCorner" 
+                                            Canvas.Left="{Binding Path=TopLeftCornerCanvasLeft,Mode=OneWay}" 
+                                            Canvas.Top="{Binding Path=BottomRightCornerCanvasTop,Mode=OneWay}" />
+                <ContentControl ContentTemplate="{StaticResource RoundCorner}"  x:Name="bottomRightCorner" Tag="BottomRightCorner" 
+                                            Canvas.Left="{Binding Path=BottomRightCornerCanvasLeft,Mode=OneWay}"
+                                            Canvas.Top="{Binding Path=BottomRightCornerCanvasTop,Mode=OneWay}"/>
+            </Canvas>
+        </Grid>
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
+            <AppBarButton Label="Revert changes" Icon="Undo" Click="Revert_Click"/>
             <AppBarButton Label="Negative" Click="Negative_Click"/>
             <AppBarButton Label="Brightness" Click="Brightness_Click"/>
-            <AppBarButton Label="Crop" Click="Crop_Click"/>
-            <AppBarButton Label="Save" Click="Save_Click"/>
-            <AppBarButton Label="Close" Click="Close_Click"/>
+            <AppBarButton Label="Crop" Icon="Crop" Click="Crop_Click"/>
+            <AppBarButton Label="Save" Icon="Save" Click="Save_Click"/>
+            <AppBarButton Label="Close" Icon="ClosePane" Click="Close_Click"/>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>
