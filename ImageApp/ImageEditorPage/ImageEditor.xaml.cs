@@ -246,14 +246,16 @@ namespace ImageApp.ImageEditorPage
         {
             editBitmap = originalBitmap.Clone();
             sourceImage.Source = editBitmap;
+            RevertButton.IsEnabled = false;
+            SaveButton.IsEnabled = false;
         }
 
         private void Negative_Click(object sender, RoutedEventArgs e)
         {
             editBitmap = editBitmap.Invert();
             sourceImage.Source = editBitmap;
+            AfterEditAction();
         }
-
 
         private void Brightness_Click(object sender, RoutedEventArgs e)
         {
@@ -268,6 +270,7 @@ namespace ImageApp.ImageEditorPage
                 editBitmap = beforeBrightnessCopy.Clone();
                 editBitmap.Lighten(amount);
                 sourceImage.Source = editBitmap;
+                AfterEditAction();
             }
         }
 
@@ -285,6 +288,13 @@ namespace ImageApp.ImageEditorPage
             editBitmap = editBitmap.Crop(rect);
             sourceImage.Source = editBitmap;
             HideCropSelection();
+            AfterEditAction();
+        }
+
+        private void AfterEditAction()
+        {
+            SaveButton.IsEnabled = true;
+            RevertButton.IsEnabled = true;
         }
 
         private void HideCropSelection()
@@ -300,6 +310,10 @@ namespace ImageApp.ImageEditorPage
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             editBitmap.SaveAsAsync(imageToEditPath);
+            originalBitmap = editBitmap;
+            editBitmap = originalBitmap.Clone();
+            RevertButton.IsEnabled = false;
+            SaveButton.IsEnabled = false;
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)

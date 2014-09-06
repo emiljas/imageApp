@@ -59,18 +59,6 @@ namespace ImageApp.ImageBrowserPage
             ThumbnailImage.Source = bitmap;
         }
 
-        //private void StackPanel_PointerEntered(object sender, PointerRoutedEventArgs e)
-        //{
-        //    StackPanel.Background = new SolidColorBrush(Colors.LightGray);
-        //    StackPanel.Background.Opacity = 0.3;
-        //}
-
-        //private void StackPanel_PointerExited(object sender, PointerRoutedEventArgs e)
-        //{
-        //    StackPanel.Background = new SolidColorBrush(Colors.Black);
-        //    StackPanel.Background.Opacity = 1;
-        //}
-
         private void StackPanel_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
             if (Click != null)

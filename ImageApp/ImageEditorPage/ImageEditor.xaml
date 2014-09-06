@@ -74,7 +74,7 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Label="Revert changes" Icon="Undo" Click="Revert_Click"/>
+            <AppBarButton Label="Revert changes" Icon="Undo" Click="Revert_Click" IsEnabled="False" x:Name="RevertButton"/>
             <AppBarButton Label="Negative" Click="Negative_Click"/>
             <AppBarButton Label="Brightness" Click="Brightness_Click" x:Name="BrightnessButton">
                 <AppBarButton.Flyout>
@@ -84,7 +84,7 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton Label="Crop" Icon="Crop" Click="Crop_Click"/>
-            <AppBarButton Label="Save" Icon="Save" Click="Save_Click"/>
+            <AppBarButton Label="Save" Icon="Save" Click="Save_Click" IsEnabled="False" x:Name="SaveButton"/>
             <AppBarButton Label="Close" Icon="ClosePane" Click="Close_Click"/>
         </CommandBar>
     </Page.BottomAppBar>
