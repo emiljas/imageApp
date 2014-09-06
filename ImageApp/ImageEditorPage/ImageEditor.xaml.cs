@@ -1,5 +1,6 @@
 ﻿using CSWindowsStoreAppCropBitmap;
 using ImageApp.Common;
+using ImageApp.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +27,12 @@ namespace ImageApp.ImageEditorPage
     public sealed partial class ImageEditor : Page
     {
         private WriteableBitmap editBitmap;
+        private WriteableBitmap originalBitmap;
         private SelectedRegion selectedRegion;
+        private WriteableBitmap beforeBrightnessCopy;
+
+        private Dictionary<uint, Point?> pointerPositionHistory = new Dictionary<uint, Point?>();
+        private string imageToEditPath;
 
         private uint sourceImagePixelWidth;
         private uint sourceImagePixelHeight;
@@ -49,9 +55,6 @@ namespace ImageApp.ImageEditorPage
                 return (double)Application.Current.Resources["Size"];
             });
 
-
-        private Dictionary<uint, Point?> pointerPositionHistory = new Dictionary<uint, Point?>();
-
         public ImageEditor()
         {
             this.InitializeComponent();
@@ -69,8 +72,9 @@ namespace ImageApp.ImageEditorPage
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
 
-            var imageToEditPath = e.NavigationParameter as string;
+            imageToEditPath = e.NavigationParameter as string;
             editBitmap = await LoadWritableBitmap(imageToEditPath);
+            originalBitmap = editBitmap.Clone();
             sourceImage.Source = editBitmap;
 
             this.sourceImagePixelWidth = (uint)editBitmap.PixelWidth;
@@ -116,8 +120,6 @@ namespace ImageApp.ImageEditorPage
         private void navigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
         }
-
-        #region NavigationHelper registration
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -240,27 +242,53 @@ namespace ImageApp.ImageEditorPage
             navigationHelper.OnNavigatedFrom(e);
         }
 
-        #endregion
+        private void Revert_Click(object sender, RoutedEventArgs e)
+        {
+            editBitmap = originalBitmap.Clone();
+            sourceImage.Source = editBitmap;
+        }
 
         private void Negative_Click(object sender, RoutedEventArgs e)
         {
             editBitmap = editBitmap.Invert();
             sourceImage.Source = editBitmap;
         }
+
+
         private void Brightness_Click(object sender, RoutedEventArgs e)
         {
+            beforeBrightnessCopy = editBitmap;
         }
+
+        private void Brightness_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            if (beforeBrightnessCopy != null)
+            {
+                double amount = e.NewValue;
+                editBitmap = beforeBrightnessCopy.Clone();
+                editBitmap.Lighten(amount);
+                sourceImage.Source = editBitmap;
+            }
+        }
+
         private void Crop_Click(object sender, RoutedEventArgs e)
         {
             double sourceImageWidthScale = imageCanvas.Width / this.sourceImagePixelWidth;
             double sourceImageHeightScale = imageCanvas.Height / this.sourceImagePixelHeight;
-            var rect = new Rect();
-            rect.X = this.selectedRegion.SelectedRect.X / sourceImageWidthScale;
-            rect.Y = this.selectedRegion.SelectedRect.Y / sourceImageHeightScale;
-            rect.Width = this.selectedRegion.SelectedRect.Width / sourceImageWidthScale;
-            rect.Height = this.selectedRegion.SelectedRect.Height / sourceImageHeightScale;
-            sourceImage.Source = editBitmap.Crop(rect);
+            var rect = new Rect
+            {
+                X = this.selectedRegion.SelectedRect.X / sourceImageWidthScale,
+                Y = this.selectedRegion.SelectedRect.Y / sourceImageHeightScale,
+                Width = this.selectedRegion.SelectedRect.Width / sourceImageWidthScale,
+                Height = this.selectedRegion.SelectedRect.Height / sourceImageHeightScale
+            };
+            editBitmap = editBitmap.Crop(rect);
+            sourceImage.Source = editBitmap;
+            HideCropSelection();
+        }
 
+        private void HideCropSelection()
+        {
             selectRegion.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             nonselectRegion.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             topLeftCorner.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
@@ -268,9 +296,12 @@ namespace ImageApp.ImageEditorPage
             bottomLeftCorner.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             bottomRightCorner.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
+
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            editBitmap.SaveAsAsync(imageToEditPath);
         }
+
         private void Close_Click(object sender, RoutedEventArgs e)
         {
         }

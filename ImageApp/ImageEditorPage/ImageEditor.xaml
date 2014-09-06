@@ -76,7 +76,13 @@
         <CommandBar>
             <AppBarButton Label="Revert changes" Icon="Undo" Click="Revert_Click"/>
             <AppBarButton Label="Negative" Click="Negative_Click"/>
-            <AppBarButton Label="Brightness" Click="Brightness_Click"/>
+            <AppBarButton Label="Brightness" Click="Brightness_Click" x:Name="BrightnessButton">
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <Slider x:Name="BrightnessSlider" Orientation="Vertical" Minimum="0" Value="0" StepFrequency="0.05" Maximum="1" Height="200" ValueChanged="Brightness_ValueChanged"/>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
             <AppBarButton Label="Crop" Icon="Crop" Click="Crop_Click"/>
             <AppBarButton Label="Save" Icon="Save" Click="Save_Click"/>
             <AppBarButton Label="Close" Icon="ClosePane" Click="Close_Click"/>

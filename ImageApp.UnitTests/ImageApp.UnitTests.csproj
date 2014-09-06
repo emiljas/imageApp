@@ -123,6 +123,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="ImageApp.UnitTests_TemporaryKey.pfx" />
+    <Compile Include="Utils\FileUtils_GetFileNameFromPath.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\UnitTestLogo.scale-100.png">
