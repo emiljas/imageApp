@@ -76,11 +76,14 @@
                 </Border>
                 <StackPanel Grid.Column="1" Margin="20, 0, 0, 0" VerticalAlignment="Center">
                     <TextBlock Text="File name:" Style="{StaticResource FileInfoCaptionTextBlockStyle}"/>
-                    <TextBlock x:Name="FileNameTextBlock" Style="{StaticResource FileInfoValueTextBlockStyle}"/>
+                    <TextBlock Style="{StaticResource FileInfoValueTextBlockStyle}"
+                               Text="{Binding Path=FileName, Mode=TwoWay}"/>
                     <TextBlock Text="Size:" Style="{StaticResource FileInfoCaptionTextBlockStyle}"/>
-                    <TextBlock x:Name="SizeTextBlock" Style="{StaticResource FileInfoValueTextBlockStyle}"/>
+                    <TextBlock Style="{StaticResource FileInfoValueTextBlockStyle}"
+                               Text="{Binding Path=Size}"/>
                     <TextBlock Text="Last modified date:" Style="{StaticResource FileInfoCaptionTextBlockStyle}"/>
-                    <TextBlock x:Name="LastModifiedDateTextBlock" Style="{StaticResource FileInfoValueTextBlockStyle}"/>
+                    <TextBlock Style="{StaticResource FileInfoValueTextBlockStyle}"
+                               Text="{Binding LastModifiedDate}"/>
                 </StackPanel>
             </Grid>
         </Grid>

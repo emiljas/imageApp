@@ -129,6 +129,7 @@
       <DependentUpon>ImageBrowser.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageBrowserPage\ImageBrowserSettings.cs" />
+    <Compile Include="ImageBrowserPage\ImageBrowserViewModel.cs" />
     <Compile Include="ImageBrowserPage\LastPathsManager.cs" />
     <Compile Include="ImageBrowserPage\Thumbnail.xaml.cs">
       <DependentUpon>Thumbnail.xaml</DependentUpon>

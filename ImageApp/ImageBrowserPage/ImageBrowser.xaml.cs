@@ -32,21 +32,23 @@
 
         private LastPathsManager lastPathManager = new LastPathsManager(LastPathsLimit);
         private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
         private string path;
         private string selectedImagePath;
+        private ImageBrowserViewModel viewModel;
 
         public ImageBrowser()
         {
             this.InitializeComponent();
+            this.InitializeBindings();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
 
-        public ObservableDictionary DefaultViewModel
+        private void InitializeBindings()
         {
-            get { return this.defaultViewModel; }
+            viewModel = new ImageBrowserViewModel();
+            this.DataContext = viewModel;
         }
 
         public NavigationHelper NavigationHelper
@@ -156,10 +158,10 @@
 
             this.selectedImagePath = file.Path;
 
-            FileNameTextBlock.Text = file.Name;
+            viewModel.FileName = file.Name;
             var properties = await file.GetBasicPropertiesAsync();
-            SizeTextBlock.Text = CapacityConverter.ConvertByteToMegabytes(properties.Size) + " MB";
-            LastModifiedDateTextBlock.Text = properties.DateModified.LocalDateTime.ToString();
+            viewModel.Size = CapacityConverter.ConvertByteToMegabytes(properties.Size) + " MB";
+            viewModel.LastModifiedDate = properties.DateModified.LocalDateTime.ToString();
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
