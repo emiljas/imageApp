@@ -128,6 +128,7 @@
     <Compile Include="ImageBrowserPage\ImageBrowser.xaml.cs">
       <DependentUpon>ImageBrowser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImageBrowserPage\ImageBrowserSettings.cs" />
     <Compile Include="ImageBrowserPage\LastPathsManager.cs" />
     <Compile Include="ImageBrowserPage\Thumbnail.xaml.cs">
       <DependentUpon>Thumbnail.xaml</DependentUpon>
@@ -141,6 +142,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\CapacityConverter.cs" />
     <Compile Include="Utils\FileUtils.cs" />
+    <Compile Include="Utils\LocalSettings.cs" />
     <Compile Include="Utils\TextUtils.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +150,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="ImageApp_TemporaryKey.pfx" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Logo.scale-100.png" />
@@ -162,6 +165,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\netcore45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="WriteableBitmapEx.WinRT">
       <HintPath>..\lib\WriteableBitmapEx.WinRT.dll</HintPath>
     </Reference>
