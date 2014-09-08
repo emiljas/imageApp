@@ -12,7 +12,7 @@ namespace ImageApp.Utils
 
         public static double ConvertByteToMegabytes(ulong bytes)
         {
-            return bytes * OneByteInMegabytes;
+            return bytes / 1024.0 / 1024.0;
         }
     }
 }

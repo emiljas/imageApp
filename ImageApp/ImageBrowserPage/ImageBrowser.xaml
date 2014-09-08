@@ -54,7 +54,12 @@
                     <RowDefinition Height="100"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <ComboBox Grid.Column="0" Height="30" Padding="5, 5" Margin="10, 0"  x:Name="LastPathsComboBox" SelectionChanged="LastPathsComboBox_SelectionChanged" PlaceholderText="choose from last paths"/>
+                <ComboBox Grid.Column="0" Height="30" Padding="5, 5" Margin="10, 0"
+                        x:Name="LastPathsComboBox"
+                          ItemsSource="{Binding LastPaths}" 
+                          SelectedIndex="{Binding SelectedPathIndex, Mode=TwoWay}"
+                          SelectionChanged="LastPathsComboBox_SelectionChanged" 
+                          PlaceholderText="choose from last paths"/>
                 <AppBarButton Grid.Column="1" Icon="Folder" Label="Pick folder" Click="PickFolder_Click"></AppBarButton>
             </Grid>
             <ListView Grid.Row="1" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -89,7 +94,7 @@
         </Grid>
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar x:Name="BottomCommandAppBar" IsEnabled="False">
+        <CommandBar x:Name="BottomCommandAppBar" IsEnabled="true">
             <AppBarButton Icon="Rename" Label="Rename"/>
             <AppBarButton Icon="Delete" Label="Delete"/>
             <AppBarButton Icon="Edit" Label="Edit" Click="Edit_Click"/>

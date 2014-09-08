@@ -11,20 +11,15 @@ namespace ImageApp.UnitTests.Utils
     [TestClass]
     public class CapacityConverter_ConvertByteToMegabytesTests
     {
-        [TestMethod]
-        public void ConvertOneByte()
-        {
-            var expected = 0.000001;
-            var result = CapacityConverter.ConvertByteToMegabytes(1);
-            Assert.AreEqual(expected, result);
-        }
+        private const double Delta = 0.01;
 
         [TestMethod]
-        public void ConvertToOneMegabytes()
+        public void Convert()
         {
-            var expected = 1;
-            var result = CapacityConverter.ConvertByteToMegabytes(1000000);
-            Assert.AreEqual(expected, result);
+            ulong bytes = 614940;
+            double megabytes = 0.58645;
+            var result = CapacityConverter.ConvertByteToMegabytes(bytes);
+            Assert.AreEqual(megabytes, result, Delta);
         }
     }
 }

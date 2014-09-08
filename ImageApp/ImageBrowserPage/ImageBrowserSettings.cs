@@ -7,44 +7,63 @@
     using ImageApp.Utils;
     using Newtonsoft.Json;
 
-    public class ImageBrowserSettings : LocalSettings
+    public class ImageBrowserSettings : ApplicationState
     {
-        private readonly string lastPathsKey;
-        private readonly string selectedDirectoryKey;
+        private readonly string viewModelKey;
+        //private readonly string lastPathsKey;
+        //private readonly string selectedDirectoryKey;
 
         public ImageBrowserSettings()
         {
             this.BaseKey = "ImageBrowser";
-            this.lastPathsKey = this.MakeKey("LastPathsKey");
-            this.selectedDirectoryKey = this.MakeKey("SelectedDirectory");
+            this.viewModelKey = MakeKey("ViewModel");
+            //this.lastPathsKey = this.MakeKey("LastPathsKey");
+            //this.selectedDirectoryKey = this.MakeKey("SelectedDirectory");
         }
 
-        public List<string> LastPaths
+        public ImageBrowserViewModel ViewModel
         {
-            get 
+            get
             {
-                string serializedValue = base[this.lastPathsKey] as string ?? string.Empty;
-                var lastPaths = JsonConvert.DeserializeObject<List<string>>(serializedValue);
-                return lastPaths ?? new List<string>();
+                var serializedViewModel = this[this.viewModelKey] as string;
+                if (string.IsNullOrEmpty(serializedViewModel))
+                    return new ImageBrowserViewModel();
+                return JsonConvert.DeserializeObject<ImageBrowserViewModel>(serializedViewModel);
             }
 
-            set 
+            set
             {
-                string serializedValue = JsonConvert.SerializeObject(value);
-                base[this.lastPathsKey] = serializedValue; 
+                var serializedViewModel = JsonConvert.SerializeObject(value);
+                this[this.viewModelKey] = serializedViewModel;
             }
         }
 
-        public string SelectedDirectory
-        {
-            get { return base[this.selectedDirectoryKey] as string; }
+        //public List<string> LastPaths
+        //{
+        //    get
+        //    {
+        //        string serializedValue = base[this.lastPathsKey] as string ?? string.Empty;
+        //        var lastPaths = JsonConvert.DeserializeObject<List<string>>(serializedValue);
+        //        return lastPaths ?? new List<string>();
+        //    }
 
-            set { base[this.selectedDirectoryKey] = value; }
-        }
+        //    set
+        //    {
+        //        string serializedValue = JsonConvert.SerializeObject(value);
+        //        base[this.lastPathsKey] = serializedValue;
+        //    }
+        //}
 
-        public bool ExistsSelectedDirectorySetting()
-        {
-            return this.Exists(this.selectedDirectoryKey);
-        }
+        //public string SelectedDirectory
+        //{
+        //    get { return base[this.selectedDirectoryKey] as string; }
+
+        //    set { base[this.selectedDirectoryKey] = value; }
+        //}
+
+        //public bool ExistsSelectedDirectorySetting()
+        //{
+        //    return this.Exists(this.selectedDirectoryKey);
+        //}
     }
 }

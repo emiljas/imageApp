@@ -39,16 +39,9 @@
         public ImageBrowser()
         {
             this.InitializeComponent();
-            this.InitializeBindings();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-        }
-
-        private void InitializeBindings()
-        {
-            viewModel = new ImageBrowserViewModel();
-            this.DataContext = viewModel;
         }
 
         public NavigationHelper NavigationHelper
@@ -68,13 +61,18 @@
 
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            this.lastPathManager.Paths = Settings.LastPaths;
-            this.UpdateLastPaths();
+            viewModel = Settings.ViewModel; 
+            this.DataContext = this.viewModel;
+
+            //this.lastPathManager.Paths = Settings.LastPaths;
+            //this.lastPathManager.Paths = viewModel.LastPaths;
+            //this.UpdateLastPaths();
         }
 
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
-            Settings.LastPaths = this.lastPathManager.Paths;
+            Settings.ViewModel = viewModel;
+            //Settings.LastPaths = this.lastPathManager.Paths;
         }
 
         private async void PickFolder_Click(object sender, RoutedEventArgs e)
@@ -83,7 +81,7 @@
             var folder = await picker.PickSingleFolderAsync();
             StorageApplicationPermissions.FutureAccessList.Add(folder);
             this.UpdateLastPaths(folder.Path);
-            this.SelectFirstPath();
+            //this.SelectFirstPath();
         }
 
         private FolderPicker MakeFolderPicker()
@@ -109,64 +107,66 @@
 
         private void UpdateLastPaths()
         {
-            LastPathsComboBox.Items.Clear();
-            foreach (var path in this.lastPathManager.Paths)
-                LastPathsComboBox.Items.Add(path);
+            this.viewModel.LastPaths = new List<string>(this.lastPathManager.Paths);
+            //LastPathsComboBox.Items.Clear();
+            //foreach (var path in this.lastPathManager.Paths)
+            //    LastPathsComboBox.Items.Add(path);
         }
 
-        private void SelectFirstPath()
-        {
-            LastPathsComboBox.SelectedIndex = 0;
-        }
+        //private void SelectFirstPath()
+        //{
+        //    this.viewModel.SelectedPathIndex = 0;
+        //}
 
         private async void LastPathsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (LastPathsComboBox.Items.Count != 0)
-            {
-                ThumbnailsListView.Items.Clear();
+            //if (this.viewModel.LastPaths.Count != 0)
+            //{
+            //    ThumbnailsListView.Items.Clear();
 
-                var selectedPath = LastPathsComboBox.SelectedItem as string;
-                if (this.path != selectedPath)
-                {
-                    this.path = selectedPath;
-                    var folder = await StorageFolder.GetFolderFromPathAsync(this.path);
-                    var files = await folder.GetFilesAsync();
+            //    var selectedPath = this.viewModel.SelectedPath;
+            //    if (this.path != selectedPath)
+            //    {
+            //        this.path = selectedPath;
+            //        var folder = await StorageFolder.GetFolderFromPathAsync(this.path);
+            //        var files = await folder.GetFilesAsync();
 
-                    foreach (var file in files)
-                    {
-                        if (SupportedImages.IsSupported(file.FileType))
-                        {
-                            var thumbnail = new Thumbnail();
-                            thumbnail.Click += this.Thumbnail_Click;
-                            thumbnail.SetFileAsync(file);
-                            ThumbnailsListView.Items.Add(thumbnail);
-                        }
-                    }
-                }
-            }
+            //        foreach (var file in files)
+            //        {
+            //            if (SupportedImages.IsSupported(file.FileType))
+            //            {
+            //                var thumbnail = new Thumbnail();
+            //                thumbnail.Click += this.Thumbnail_Click;
+            //                thumbnail.SetFileAsync(file);
+            //                ThumbnailsListView.Items.Add(thumbnail);
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         private async void Thumbnail_Click(object sender, EventArgs e)
         {
-            BottomCommandAppBar.IsEnabled = true;
-            var thumbnail = sender as Thumbnail;
-            var file = thumbnail.File;
-            var bitmap = new BitmapImage();
-            var stream = await file.OpenReadAsync();
-            await bitmap.SetSourceAsync(stream);
-            SelectedImage.Source = bitmap;
+            //BottomCommandAppBar.IsEnabled = true;
+            //var thumbnail = sender as Thumbnail;
+            //var file = thumbnail.File;
+            //var bitmap = new BitmapImage();
+            //var stream = await file.OpenReadAsync();
+            //await bitmap.SetSourceAsync(stream);
+            //SelectedImage.Source = bitmap;
 
-            this.selectedImagePath = file.Path;
+            //this.selectedImagePath = file.Path;
 
-            viewModel.FileName = file.Name;
-            var properties = await file.GetBasicPropertiesAsync();
-            viewModel.Size = CapacityConverter.ConvertByteToMegabytes(properties.Size) + " MB";
-            viewModel.LastModifiedDate = properties.DateModified.LocalDateTime.ToString();
+            //viewModel.FileName = file.Name;
+            //var properties = await file.GetBasicPropertiesAsync();
+            //viewModel.Size = CapacityConverter.ConvertByteToMegabytes(properties.Size) + " MB";
+            //viewModel.LastModifiedDate = properties.DateModified.LocalDateTime.ToString();
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ImageEditor), this.selectedImagePath);
+            NavigationHelper_SaveState(this, SaveStateEventArgs.Empty as SaveStateEventArgs);
+            //this.Frame.Navigate(typeof(ImageEditor), this.selectedImagePath);
         }
     }
 }
