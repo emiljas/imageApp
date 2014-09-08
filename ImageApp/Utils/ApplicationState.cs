@@ -20,7 +20,7 @@
         {
             get
             {
-                return ApplicationData.Current.LocalSettings.Values;
+                return ApplicationData.Current.R;
             }
         }
 
