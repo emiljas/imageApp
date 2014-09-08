@@ -7,7 +7,7 @@
     using ImageApp.Utils;
     using Newtonsoft.Json;
 
-    public class ImageBrowserSettings : ApplicationState
+    public class ImageBrowserSettings : LocalSettings
     {
         private readonly string viewModelKey;
         //private readonly string lastPathsKey;

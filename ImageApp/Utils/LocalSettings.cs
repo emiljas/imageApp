@@ -4,7 +4,7 @@
     using Windows.Foundation.Collections;
     using Windows.Storage;
 
-    public abstract class ApplicationState
+    public abstract class LocalSettings
     {
         private string baseKey;
 
