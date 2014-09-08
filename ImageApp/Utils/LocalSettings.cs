@@ -7,6 +7,12 @@
     public abstract class LocalSettings
     {
         private string baseKey;
+        private IPropertySet settings;
+
+        public LocalSettings()
+        {
+            this.settings = ApplicationData.Current.LocalSettings.Values;
+        }
 
         protected string BaseKey
         {
@@ -16,23 +22,20 @@
             }
         }
 
-        private IPropertySet Settings
-        {
-            get
-            {
-                return ApplicationData.Current.R;
-            }
-        }
-
         protected object this[string key]
         {
-            get { return this.Settings[key]; }
-            set { this.Settings[key] = value; }
+            get { return this.settings[key]; }
+            set { this.settings[key] = value; }
+        }
+
+        protected void InjectSettings(IPropertySet settings)
+        {
+            this.settings = settings;
         }
 
         protected bool Exists(string key)
         {
-            return this.Settings.ContainsKey(key);
+            return this.settings.ContainsKey(key);
         }
 
         protected string MakeKey(string key)
