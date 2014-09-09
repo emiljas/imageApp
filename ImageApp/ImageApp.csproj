@@ -146,6 +146,7 @@
     <Compile Include="Utils\CapacityConverter.cs" />
     <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Utils\TextUtils.cs" />
+    <Compile Include="XamlUtils\PathToFileNameConverter.cs" />
     <Compile Include="XamlUtils\SelectedIndexToBooleanConverter.cs" />
   </ItemGroup>
   <ItemGroup>

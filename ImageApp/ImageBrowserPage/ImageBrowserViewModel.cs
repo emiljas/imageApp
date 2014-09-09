@@ -68,6 +68,7 @@ namespace ImageApp.ImageBrowserPage
             set
             {
                 selectedImagePath = value;
+                Notify("SelectedImagePath");
                 if(!string.IsNullOrEmpty(selectedImagePath))
                 {
                     var loadingTask = BitmapImageUtils.LoadAsync(selectedImagePath);

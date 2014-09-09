@@ -178,5 +178,10 @@
         {
             this.Frame.Navigate(typeof(ImageEditor), this.selectedImagePath);
         }
+
+        private void Rename_Click(object sender, RoutedEventArgs e)
+        {
+            RenameFlyout.Hide();
+        }
     }
 }
