@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using ImageApp.ImageBrowserPage;
 
-namespace ImageApp.UnitTests.ImageBrowser
+namespace ImageApp.UnitTests.ImageBrowserPage
 {
     [TestClass]
     public class LastPathsManagerTests

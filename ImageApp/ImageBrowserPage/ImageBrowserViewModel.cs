@@ -15,7 +15,9 @@ namespace ImageApp.ImageBrowserPage
         {
             get
             {
-                return lastPaths ?? new List<string>();
+                if (lastPaths == null)
+                    lastPaths = new List<string>();
+                return lastPaths;
             }
 
             set 

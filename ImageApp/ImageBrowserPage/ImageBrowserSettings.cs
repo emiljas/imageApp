@@ -6,6 +6,7 @@
     using System.Text;
     using ImageApp.Utils;
     using Newtonsoft.Json;
+using Windows.Foundation.Collections;
 
     public class ImageBrowserSettings : LocalSettings
     {

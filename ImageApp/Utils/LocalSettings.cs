@@ -28,7 +28,7 @@
             set { this.settings[key] = value; }
         }
 
-        protected void InjectSettings(IPropertySet settings)
+        public void InjectSettings(IPropertySet settings)
         {
             this.settings = settings;
         }
