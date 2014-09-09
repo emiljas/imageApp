@@ -8,10 +8,12 @@
     xmlns:common="using:ImageApp.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    xmlns:xamlUtils="using:ImageApp.XamlUtils">
 
     <Page.Resources>
         <x:String x:Key="AppName">My Application</x:String>
+        <xamlUtils:SelectedIndexToBooleanConverter x:Key="SelectedIndexToBooleanConverter"/>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -94,7 +96,7 @@
         </Grid>
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar x:Name="BottomCommandAppBar" IsEnabled="false">
+        <CommandBar IsEnabled="{Binding SelectedPathIndex, Mode=OneWay, Converter={StaticResource SelectedIndexToBooleanConverter}}">
             <AppBarButton Icon="Rename" Label="Rename"/>
             <AppBarButton Icon="Delete" Label="Delete"/>
             <AppBarButton Icon="Edit" Label="Edit" Click="Edit_Click"/>

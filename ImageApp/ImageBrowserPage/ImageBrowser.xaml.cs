@@ -158,7 +158,6 @@
 
         private async void Thumbnail_Click(object sender, EventArgs e)
         {
-            BottomCommandAppBar.IsEnabled = true;
             var thumbnail = sender as Thumbnail;
             var file = thumbnail.File;
             var bitmap = new BitmapImage();
@@ -166,7 +165,6 @@
             await bitmap.SetSourceAsync(stream);
 
             this.selectedImagePath = file.Path;
-            //SelectedImage.Source = bitmap; !!!!!!!!!!!!!!!!!!!
             viewModel.SelectedImagePath = this.selectedImagePath;
 
 
