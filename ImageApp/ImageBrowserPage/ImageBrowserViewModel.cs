@@ -1,10 +1,17 @@
-﻿using System;
+﻿using ImageApp.Utils;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace ImageApp.ImageBrowserPage
 {
@@ -49,6 +56,49 @@ namespace ImageApp.ImageBrowserPage
                 return lastPaths[selectedPathIndex];
             }
         }
+
+        private string selectedImagePath;
+        public string SelectedImagePath
+        {
+            get
+            {
+                return selectedImagePath;
+            }
+
+            set
+            {
+                selectedImagePath = value;
+                if(!string.IsNullOrEmpty(selectedImagePath))
+                {
+                    var loadingTask = BitmapImageUtils.LoadAsync(selectedImagePath);
+                    loadingTask.ContinueWith((Task<BitmapImage> task) =>
+                    {
+                        CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, new DispatchedHandler(delegate()
+                        {
+                            SelectedImage = task.Result;
+                        }));
+
+                    });
+                }
+            }
+        }
+
+        private BitmapImage selectedImage;
+        [JsonIgnore]
+        public BitmapImage SelectedImage
+        {
+            get
+            {
+                return selectedImage;
+            }
+
+            set
+            {
+                selectedImage = value;
+                Notify("SelectedImage");
+            }
+        }
+        
 
         private string fileName;
         public string FileName

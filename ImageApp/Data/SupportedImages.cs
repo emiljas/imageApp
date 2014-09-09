@@ -10,6 +10,7 @@ namespace ImageApp.Data
     {
         public static readonly string[] Extensions = new string[]
         {
+            ".bmp",
             ".jpg",
             ".jpeg",
             ".gif",

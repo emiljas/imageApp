@@ -80,9 +80,7 @@
             viewModel = Settings.ViewModel;
             this.DataContext = this.viewModel;
 
-            //this.lastPathManager.Paths = Settings.LastPaths;
-            //this.lastPathManager.Paths = viewModel.LastPaths;
-            //this.UpdateLastPaths();
+            lastPathManager.Paths = new List<string>(viewModel.LastPaths);
         }
 
         private void SaveState()
@@ -118,24 +116,22 @@
         {
             this.lastPathManager.Add(newPath);
             this.UpdateLastPaths();
+            this.SelectFirstPath();
         }
 
         private void UpdateLastPaths()
         {
             this.viewModel.LastPaths = new List<string>(this.lastPathManager.Paths);
-            //LastPathsComboBox.Items.Clear();
-            //foreach (var path in this.lastPathManager.Paths)
-            //    LastPathsComboBox.Items.Add(path);
         }
 
-        //private void SelectFirstPath()
-        //{
-        //    this.viewModel.SelectedPathIndex = 0;
-        //}
+        private void SelectFirstPath()
+        {
+            this.viewModel.SelectedPathIndex = 0;
+        }
 
         private async void LastPathsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (this.viewModel.LastPaths.Count != 0)
+            if (this.viewModel.LastPaths.Count != 0 && this.viewModel.SelectedPathIndex != -1)
             {
                 ThumbnailsListView.Items.Clear();
 
@@ -162,26 +158,27 @@
 
         private async void Thumbnail_Click(object sender, EventArgs e)
         {
-            //BottomCommandAppBar.IsEnabled = true;
-            //var thumbnail = sender as Thumbnail;
-            //var file = thumbnail.File;
-            //var bitmap = new BitmapImage();
-            //var stream = await file.OpenReadAsync();
-            //await bitmap.SetSourceAsync(stream);
-            //SelectedImage.Source = bitmap;
+            BottomCommandAppBar.IsEnabled = true;
+            var thumbnail = sender as Thumbnail;
+            var file = thumbnail.File;
+            var bitmap = new BitmapImage();
+            var stream = await file.OpenReadAsync();
+            await bitmap.SetSourceAsync(stream);
 
-            //this.selectedImagePath = file.Path;
+            this.selectedImagePath = file.Path;
+            //SelectedImage.Source = bitmap; !!!!!!!!!!!!!!!!!!!
+            viewModel.SelectedImagePath = this.selectedImagePath;
 
-            //viewModel.FileName = file.Name;
-            //var properties = await file.GetBasicPropertiesAsync();
-            //viewModel.Size = CapacityConverter.ConvertByteToMegabytes(properties.Size) + " MB";
-            //viewModel.LastModifiedDate = properties.DateModified.LocalDateTime.ToString();
+
+            viewModel.FileName = file.Name;
+            var properties = await file.GetBasicPropertiesAsync();
+            viewModel.Size = CapacityConverter.ConvertByteToMegabytes(properties.Size) + " MB";
+            viewModel.LastModifiedDate = properties.DateModified.LocalDateTime.ToString();
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
-            NavigationHelper_SaveState(this, SaveStateEventArgs.Empty as SaveStateEventArgs);
-            //this.Frame.Navigate(typeof(ImageEditor), this.selectedImagePath);
+            this.Frame.Navigate(typeof(ImageEditor), this.selectedImagePath);
         }
     }
 }
