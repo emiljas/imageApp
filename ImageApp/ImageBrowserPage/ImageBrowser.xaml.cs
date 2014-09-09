@@ -42,6 +42,7 @@
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            App.Current.Suspending += App_Suspending;
         }
 
         public NavigationHelper NavigationHelper
@@ -61,7 +62,22 @@
 
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            viewModel = Settings.ViewModel; 
+            LoadState();
+        }
+
+        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
+        {
+            SaveState();
+        }
+
+        private void App_Suspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        {
+            SaveState();
+        }
+
+        private void LoadState()
+        {
+            viewModel = Settings.ViewModel;
             this.DataContext = this.viewModel;
 
             //this.lastPathManager.Paths = Settings.LastPaths;
@@ -69,10 +85,9 @@
             //this.UpdateLastPaths();
         }
 
-        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
+        private void SaveState()
         {
             Settings.ViewModel = viewModel;
-            //Settings.LastPaths = this.lastPathManager.Paths;
         }
 
         private async void PickFolder_Click(object sender, RoutedEventArgs e)
@@ -120,29 +135,29 @@
 
         private async void LastPathsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if (this.viewModel.LastPaths.Count != 0)
-            //{
-            //    ThumbnailsListView.Items.Clear();
+            if (this.viewModel.LastPaths.Count != 0)
+            {
+                ThumbnailsListView.Items.Clear();
 
-            //    var selectedPath = this.viewModel.SelectedPath;
-            //    if (this.path != selectedPath)
-            //    {
-            //        this.path = selectedPath;
-            //        var folder = await StorageFolder.GetFolderFromPathAsync(this.path);
-            //        var files = await folder.GetFilesAsync();
+                var selectedPath = this.viewModel.SelectedPath;
+                if (this.path != selectedPath)
+                {
+                    this.path = selectedPath;
+                    var folder = await StorageFolder.GetFolderFromPathAsync(this.path);
+                    var files = await folder.GetFilesAsync();
 
-            //        foreach (var file in files)
-            //        {
-            //            if (SupportedImages.IsSupported(file.FileType))
-            //            {
-            //                var thumbnail = new Thumbnail();
-            //                thumbnail.Click += this.Thumbnail_Click;
-            //                thumbnail.SetFileAsync(file);
-            //                ThumbnailsListView.Items.Add(thumbnail);
-            //            }
-            //        }
-            //    }
-            //}
+                    foreach (var file in files)
+                    {
+                        if (SupportedImages.IsSupported(file.FileType))
+                        {
+                            var thumbnail = new Thumbnail();
+                            thumbnail.Click += this.Thumbnail_Click;
+                            thumbnail.SetFileAsync(file);
+                            ThumbnailsListView.Items.Add(thumbnail);
+                        }
+                    }
+                }
+            }
         }
 
         private async void Thumbnail_Click(object sender, EventArgs e)
