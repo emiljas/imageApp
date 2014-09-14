@@ -15,7 +15,7 @@ namespace ImageApp.XamlUtils
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var path = (string)value;
-            return pathUtils.Split(path).FileName;
+            return pathUtils.Split(path).FileNameWithExtension;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

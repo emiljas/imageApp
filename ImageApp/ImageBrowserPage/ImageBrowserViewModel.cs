@@ -112,7 +112,7 @@ namespace ImageApp.ImageBrowserPage
             set
             {
                 fileName = value; 
-                Notify("FileName");
+                Notify("FileNameWithExtension");
             }
         }
 

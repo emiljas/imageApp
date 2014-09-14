@@ -18,7 +18,7 @@ namespace ImageApp.UnitTests.Utils
 			var path = @"C:\Users\Emil\Pictures\got\abc.png";
 			var result = pathUtils.Split(path);
 			Assert.AreEqual(@"C:\Users\Emil\Pictures\got", result.Directory);
-			Assert.AreEqual("abc.png", result.FileName);
+			Assert.AreEqual("abc.png", result.FileNameWithExtension);
         }
     }
 }

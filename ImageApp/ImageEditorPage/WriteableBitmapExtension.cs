@@ -54,7 +54,7 @@ namespace ImageApp.ImageEditorPage
         {
             var splittedPath = pathUtils.Split(path);
             var folder = await StorageFolder.GetFolderFromPathAsync(splittedPath.Directory);
-            var file = await folder.CreateFileAsync(splittedPath.FileName, CreationCollisionOption.ReplaceExisting);
+            var file = await folder.CreateFileAsync(splittedPath.FileNameWithExtension, CreationCollisionOption.ReplaceExisting);
             using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
             {
                 var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
