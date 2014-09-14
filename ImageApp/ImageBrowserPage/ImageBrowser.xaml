@@ -103,7 +103,7 @@
                     <Flyout x:Name="RenameFlyout">
                         <StackPanel Orientation="Vertical" Width="250" Margin="20">
                             <TextBox x:Name="RenameTextBox" SelectedText="{Binding SelectedImagePath, Converter={StaticResource PathToFileNameConverter}}"/>
-                            <Button Content="Rename" Margin="0, 20, 0, 0" Click="Rename_Click"/>
+                            <Button Content="Rename" Margin="0, 20, 0, 0" Click="Rename_ClickAsync"/>
                         </StackPanel>
                     </Flyout>
                 </AppBarButton.Flyout>

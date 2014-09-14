@@ -122,6 +122,8 @@
     <Compile Include="Mock\PropertySetMockTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\CapacityConverter_ConvertByteToMegabytesTests.cs" />
+    <Compile Include="Utils\PathUtils_GetExtension.cs" />
+    <Compile Include="Utils\PathUtils_Join.cs" />
     <Compile Include="Utils\TextUtils_FitTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -129,7 +131,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="ImageApp.UnitTests_TemporaryKey.pfx" />
-    <Compile Include="Utils\FileUtils_GetFileNameFromPath.cs" />
+    <Compile Include="Utils\PathUtils_GetFileNameFromPath.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

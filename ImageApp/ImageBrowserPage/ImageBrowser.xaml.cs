@@ -95,7 +95,6 @@
             var folder = await picker.PickSingleFolderAsync();
             StorageApplicationPermissions.FutureAccessList.Add(folder);
             this.UpdateLastPaths(folder.Path);
-            //this.SelectFirstPath();
         }
 
         private FolderPicker MakeFolderPicker()
@@ -180,11 +179,13 @@
             this.Frame.Navigate(typeof(ImageEditor), this.selectedImagePath);
         }
 
-        private void Rename_Click(object sender, RoutedEventArgs e)
+        private async void Rename_ClickAsync(object sender, RoutedEventArgs e)
         {
             var directory = pathUtils.Split(viewModel.SelectedImagePath).Directory;
-            var fileName = RenameTextBox.Text;
-            pathUtils.Join(directory, fileName);
+            var fileName = RenameTextBox.Text + pathUtils.GetExtension(viewModel.SelectedImagePath);
+            path = pathUtils.Join(directory, fileName);
+            var file = await StorageFile.GetFileFromPathAsync(viewModel.SelectedImagePath);
+            await file.RenameAsync(fileName, NameCollisionOption.GenerateUniqueName);
             RenameFlyout.Hide();
         }
     }

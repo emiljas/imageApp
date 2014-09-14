@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ImageApp.Utils
 {
-    public class SplittedPath
-    {
-        public string Directory { get; set; }
-        public string FileName { get; set; }
-    }
-
     public class PathUtils
     {
         public SplittedPath Split(string path)
@@ -23,9 +18,20 @@ namespace ImageApp.Utils
             return sp;
         }
 
-        internal void Join(string directory, string fileName)
+        public string Join(string directory, string fileName)
         {
-            throw new NotImplementedException();
+            return Path.Combine(directory, fileName);
         }
+
+        public string GetExtension(string path)
+        {
+            return Path.GetExtension(path);
+        }
+    }
+
+    public class SplittedPath
+    {
+        public string Directory { get; set; }
+        public string FileName { get; set; }
     }
 }

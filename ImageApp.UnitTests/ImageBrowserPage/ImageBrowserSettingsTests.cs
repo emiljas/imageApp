@@ -15,7 +15,7 @@ namespace ImageApp.UnitTests.ImageBrowserPage
         private const string Path = "a\\b";
 
         [TestMethod]
-        public void StoreAndReRetriveViewModel()
+        public void StoreAndRetriveViewModel()
         {
             var settings = MakeSettings();
             var viewModel = MakeViewModelWithPath();
