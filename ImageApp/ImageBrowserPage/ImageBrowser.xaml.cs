@@ -35,7 +35,7 @@
         private string path;
         private string selectedImagePath;
         private ImageBrowserViewModel viewModel;
-        private FileUtils fileUtils = new FileUtils();
+        private PathUtils pathUtils = new PathUtils();
 
         public ImageBrowser()
         {
@@ -182,9 +182,9 @@
 
         private void Rename_Click(object sender, RoutedEventArgs e)
         {
-            var directory = fileUtils.Split(viewModel.SelectedImagePath).Directory;
+            var directory = pathUtils.Split(viewModel.SelectedImagePath).Directory;
             var fileName = RenameTextBox.Text;
-            fileUtils.Join(directory, fileName);
+            pathUtils.Join(directory, fileName);
             RenameFlyout.Hide();
         }
     }

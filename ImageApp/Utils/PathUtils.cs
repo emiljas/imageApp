@@ -12,7 +12,7 @@ namespace ImageApp.Utils
         public string FileName { get; set; }
     }
 
-    public class FileUtils
+    public class PathUtils
     {
         public SplittedPath Split(string path)
         {

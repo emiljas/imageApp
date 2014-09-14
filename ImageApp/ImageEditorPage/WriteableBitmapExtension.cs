@@ -13,7 +13,7 @@ namespace ImageApp.ImageEditorPage
 {
     public static class WriteableBitmapExtension
     {
-        private static FileUtils fileUtils = new FileUtils();
+        private static PathUtils pathUtils = new PathUtils();
 
         /// <summary>
         /// Lightens the specified bitmap.
@@ -52,7 +52,7 @@ namespace ImageApp.ImageEditorPage
 
         public static async void SaveAsAsync(this WriteableBitmap wb, string path)
         {
-            var splittedPath = fileUtils.Split(path);
+            var splittedPath = pathUtils.Split(path);
             var folder = await StorageFolder.GetFolderFromPathAsync(splittedPath.Directory);
             var file = await folder.CreateFileAsync(splittedPath.FileName, CreationCollisionOption.ReplaceExisting);
             using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
