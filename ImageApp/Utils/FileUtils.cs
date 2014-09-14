@@ -22,5 +22,10 @@ namespace ImageApp.Utils
             sp.FileName = path.Substring(index + 1);
             return sp;
         }
+
+        internal void Join(string directory, string fileName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
