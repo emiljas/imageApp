@@ -197,5 +197,14 @@
             await ForceUpdateThumbnail();
             RenameFlyout.Hide();
         }
+
+        private async void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            var file = await StorageFile.GetFileFromPathAsync(viewModel.SelectedImagePath);
+            await file.DeleteAsync();
+            await ForceUpdateThumbnail();
+            RenameFlyout.Hide();
+        }
+
     }
 }

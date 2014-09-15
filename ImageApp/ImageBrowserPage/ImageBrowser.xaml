@@ -13,7 +13,7 @@
 
     <Page.Resources>
         <x:String x:Key="AppName">My Application</x:String>
-        <xamlUtils:SelectedIndexToBooleanConverter x:Key="SelectedIndexToBooleanConverter"/>
+        <xamlUtils:StringToBooleanConverter x:Key="StringToBooleanConverter"/>
         <xamlUtils:PathToFileNameConverter x:Key="PathToFileNameConverter"/>
     </Page.Resources>
 
@@ -97,7 +97,7 @@
         </Grid>
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar IsEnabled="{Binding SelectedPathIndex, Mode=OneWay, Converter={StaticResource SelectedIndexToBooleanConverter}}">
+        <CommandBar IsEnabled="{Binding SelectedImagePath, Mode=OneWay, Converter={StaticResource StringToBooleanConverter}}">
             <AppBarButton Icon="Rename" Label="Rename">
                 <AppBarButton.Flyout>
                     <Flyout x:Name="RenameFlyout">
@@ -108,7 +108,13 @@
                     </Flyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton Icon="Delete" Label="Delete"/>
+            <AppBarButton Icon="Delete" Label="Delete">
+                <Flyout x:Name="DeleteFlyout">
+                    <StackPanel Width="100">
+                        <Button Content="Delete picture" Click="Delete_Click"/>
+                    </StackPanel>
+                </Flyout>
+            </AppBarButton>
             <AppBarButton Icon="Edit" Label="Edit" Click="Edit_Click"/>
         </CommandBar>
     </Page.BottomAppBar>

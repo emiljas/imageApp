@@ -125,7 +125,6 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="Data\SupportedImages.cs" />
-    <Compile Include="ImageBrowserPage\FileModifiedComparer.cs" />
     <Compile Include="ImageBrowserPage\ImageBrowser.xaml.cs">
       <DependentUpon>ImageBrowser.xaml</DependentUpon>
     </Compile>
@@ -148,7 +147,7 @@
     <Compile Include="Utils\PathUtils.cs" />
     <Compile Include="Utils\TextUtils.cs" />
     <Compile Include="XamlUtils\PathToFileNameConverter.cs" />
-    <Compile Include="XamlUtils\SelectedIndexToBooleanConverter.cs" />
+    <Compile Include="XamlUtils\StringToBooleanConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

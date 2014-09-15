@@ -7,13 +7,12 @@ using Windows.UI.Xaml.Data;
 
 namespace ImageApp.XamlUtils
 {
-    public class SelectedIndexToBooleanConverter : IValueConverter
+    public class StringToBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            int selectedIndex = (int)value;
-            bool isSelected = selectedIndex != -1;
-            return isSelected;
+            var str = value as string;
+            return !string.IsNullOrEmpty(str);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
