@@ -109,11 +109,13 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton Icon="Delete" Label="Delete">
-                <Flyout x:Name="DeleteFlyout">
-                    <StackPanel Width="100">
-                        <Button Content="Delete picture" Click="Delete_Click"/>
-                    </StackPanel>
-                </Flyout>
+                <AppBarButton.Flyout>
+                    <Flyout x:Name="DeleteFlyout">
+                        <StackPanel>
+                            <Button Content="Delete picture" Click="Delete_Click"/>
+                        </StackPanel>
+                    </Flyout>
+                </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton Icon="Edit" Label="Edit" Click="Edit_Click"/>
         </CommandBar>

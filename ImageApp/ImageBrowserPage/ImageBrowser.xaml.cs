@@ -33,7 +33,6 @@
         private LastPathsManager lastPathManager = new LastPathsManager(LastPathsLimit);
         private NavigationHelper navigationHelper;
         private string path;
-        private string selectedImagePath;
         private ImageBrowserViewModel viewModel;
         private PathUtils pathUtils = new PathUtils();
 
@@ -138,8 +137,6 @@
         {
             if (this.viewModel.LastPaths.Count != 0 && this.viewModel.SelectedPathIndex != -1)
             {
-                ThumbnailsListView.Items.Clear();
-
                 if (this.path != this.viewModel.SelectedPath)
                     await ForceUpdateThumbnail();
             }
@@ -147,11 +144,10 @@
 
         private async System.Threading.Tasks.Task ForceUpdateThumbnail()
         {
+            ThumbnailsListView.Items.Clear();
             this.path = this.viewModel.SelectedPath;
             var folder = await StorageFolder.GetFolderFromPathAsync(this.path);
             var files = await folder.GetFilesAsync();
-
-
 
             foreach (var file in files)
             {
@@ -172,9 +168,7 @@
             var bitmap = new BitmapImage();
             var stream = await file.OpenReadAsync();
             await bitmap.SetSourceAsync(stream);
-
-            this.selectedImagePath = file.Path;
-            viewModel.SelectedImagePath = this.selectedImagePath;
+            viewModel.SelectedImagePath = file.Path;
 
 
             viewModel.FileName = file.Name;
@@ -185,7 +179,7 @@
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ImageEditor), this.selectedImagePath);
+            this.Frame.Navigate(typeof(ImageEditor), viewModel.SelectedImagePath);
         }
 
         private async void Rename_ClickAsync(object sender, RoutedEventArgs e)
@@ -203,7 +197,7 @@
             var file = await StorageFile.GetFileFromPathAsync(viewModel.SelectedImagePath);
             await file.DeleteAsync();
             await ForceUpdateThumbnail();
-            RenameFlyout.Hide();
+            DeleteFlyout.Hide();
         }
 
     }

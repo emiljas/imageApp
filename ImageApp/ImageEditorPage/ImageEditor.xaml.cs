@@ -318,6 +318,7 @@ namespace ImageApp.ImageEditorPage
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
+            NavigationHelper.GoBack();
         }
     }
 }
