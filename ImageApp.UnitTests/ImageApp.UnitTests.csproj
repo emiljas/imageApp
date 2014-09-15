@@ -131,7 +131,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="ImageApp.UnitTests_TemporaryKey.pfx" />
-    <Compile Include="Utils\PathUtils_GetFileNameFromPath.cs" />
+    <Compile Include="Utils\PathUtils_Split.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

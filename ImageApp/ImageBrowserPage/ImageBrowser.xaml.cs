@@ -131,27 +131,36 @@
 
         private async void LastPathsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            await UpdateThumbnails();
+        }
+
+        private async System.Threading.Tasks.Task UpdateThumbnails()
+        {
             if (this.viewModel.LastPaths.Count != 0 && this.viewModel.SelectedPathIndex != -1)
             {
                 ThumbnailsListView.Items.Clear();
 
-                var selectedPath = this.viewModel.SelectedPath;
-                if (this.path != selectedPath)
-                {
-                    this.path = selectedPath;
-                    var folder = await StorageFolder.GetFolderFromPathAsync(this.path);
-                    var files = await folder.GetFilesAsync();
+                if (this.path != this.viewModel.SelectedPath)
+                    await ForceUpdateThumbnail();
+            }
+        }
 
-                    foreach (var file in files)
-                    {
-                        if (SupportedImages.IsSupported(file.FileType))
-                        {
-                            var thumbnail = new Thumbnail();
-                            thumbnail.Click += this.Thumbnail_Click;
-                            thumbnail.SetFileAsync(file);
-                            ThumbnailsListView.Items.Add(thumbnail);
-                        }
-                    }
+        private async System.Threading.Tasks.Task ForceUpdateThumbnail()
+        {
+            this.path = this.viewModel.SelectedPath;
+            var folder = await StorageFolder.GetFolderFromPathAsync(this.path);
+            var files = await folder.GetFilesAsync();
+
+
+
+            foreach (var file in files)
+            {
+                if (SupportedImages.IsSupported(file.FileType))
+                {
+                    var thumbnail = new Thumbnail();
+                    thumbnail.Click += this.Thumbnail_Click;
+                    thumbnail.SetFileAsync(file);
+                    ThumbnailsListView.Items.Add(thumbnail);
                 }
             }
         }
@@ -183,9 +192,9 @@
         {
             var directory = pathUtils.Split(viewModel.SelectedImagePath).Directory;
             var fileName = RenameTextBox.Text + pathUtils.GetExtension(viewModel.SelectedImagePath);
-            path = pathUtils.Join(directory, fileName);
             var file = await StorageFile.GetFileFromPathAsync(viewModel.SelectedImagePath);
             await file.RenameAsync(fileName, NameCollisionOption.GenerateUniqueName);
+            await ForceUpdateThumbnail();
             RenameFlyout.Hide();
         }
     }

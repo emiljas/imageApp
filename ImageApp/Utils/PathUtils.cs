@@ -15,7 +15,14 @@ namespace ImageApp.Utils
             var index = path.LastIndexOf(@"\");
             sp.Directory = path.Substring(0, index);
             sp.FileNameWithExtension = path.Substring(index + 1);
+            sp.FileNameWithoutExtension = RemoveExtension(sp.FileNameWithExtension);
             return sp;
+        }
+
+        private string RemoveExtension(string fileNameWithExtension)
+        {
+            int dotIndex = fileNameWithExtension.LastIndexOf(".");
+            return fileNameWithExtension.Substring(0, dotIndex);
         }
 
         public string Join(string directory, string fileName)

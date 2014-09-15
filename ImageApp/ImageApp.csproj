@@ -125,6 +125,7 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="Data\SupportedImages.cs" />
+    <Compile Include="ImageBrowserPage\FileModifiedComparer.cs" />
     <Compile Include="ImageBrowserPage\ImageBrowser.xaml.cs">
       <DependentUpon>ImageBrowser.xaml</DependentUpon>
     </Compile>

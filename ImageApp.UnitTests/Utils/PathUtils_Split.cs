@@ -12,13 +12,14 @@ namespace ImageApp.UnitTests.Utils
     public class PathUtils_Split
     {
 		[TestMethod]
-		public void SplitCorectPath()
+		public void Split()
         {
 			var pathUtils = new PathUtils();
 			var path = @"C:\Users\Emil\Pictures\got\abc.png";
 			var result = pathUtils.Split(path);
 			Assert.AreEqual(@"C:\Users\Emil\Pictures\got", result.Directory);
 			Assert.AreEqual("abc.png", result.FileNameWithExtension);
+            Assert.AreEqual("abc", result.FileNameWithoutExtension);
         }
     }
 }
